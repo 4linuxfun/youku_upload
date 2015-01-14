@@ -9,11 +9,12 @@
 
 ##二. 创建youku应用
 使用youku开放接口，需要创建应用
+
 1. 进入官网[http://open.youku.com/](http://open.youku.com/)
+
 2. 进入管理中心->创建应用
-	![创建引用](创建应用.png)
-	
 	**注意：**此处的回调地址我填写了*http://localhost*，测试填写空置的时候貌似会返回错误，自己可测试下。
+
 3. 记录应用的信息
 	![帐号信息](帐号信息.png)
 	记住图上的**client_id**和**client_secret**
@@ -28,9 +29,13 @@ set client_secret   "xxxxxxxxxxxxxxxxxxxx"
 set redirect_uri 	"http://localhost"
 ```
 **md5_check**：用来确认是否在传输过程中使用hash，保障数据传输完整性，0为关闭，1为开启（不建议启用，由于使用tcllib包的md5功能，启用后会大量占用CPU资源）
+
 **slice_length**：设置上传分片大小，最小为2048Kb，最大为10240Kb
+
 **client_id**：创建应用中获取的id
+
 **client_secret**：需要连接授权，后期token过期后也需要刷新
+
 **redirect_uri**：创建应用时填写的回调地址，必须一致
 
 ##四. 上传视频到youku
