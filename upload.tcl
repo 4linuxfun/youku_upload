@@ -13,9 +13,11 @@ set client_secret   ""
 set redirect_uri    "http://localhost"
 
 proc get_ipaddr {upload_server_uri} {
-    if {[catch {set tok  [dns::resolve $upload_server_uri]} info]} {
-        puts "DNS error:$info"
-        sleep [expr {5 * 1000}]
+    	set token  [dns::resolve $upload_server_uri -timeout 60000]
+        dns::wait $token
+		if {[dns::status $token] != "ok"} {
+		puts "[dns::error $token]"
+        dns::cleanup $token
         get_ipaddr $upload_server_uri
         }
     set ip_addr [lindex [dns::address $tok] 0]
