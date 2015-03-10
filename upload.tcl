@@ -1,12 +1,12 @@
 #!/usr/bin/tclsh
-#这个脚本用来上传文件
+#杩欎釜鑴氭湰鐢ㄦ潵涓婁紶鏂囦欢
 package require http
 package require tls
 package require md5
 package require dns
 
 set md5_check       0
-#slice_length设置上传块大小，范围2048-10240
+#slice_length璁剧疆涓婁紶鍧楀ぇ灏忥紝鑼冨洿2048-10240
 set slice_length    10240
 set client_id       ""
 set client_secret   ""
@@ -20,13 +20,13 @@ proc get_ipaddr {upload_server_uri} {
         dns::cleanup $token
         get_ipaddr $upload_server_uri
         }
-    set ip_addr [lindex [dns::address $tok] 0]
-    dns::cleanup $tok
+    set ip_addr [lindex [dns::address $token] 0]
+    dns::cleanup $token
     #puts "IP_ADDR is :$ip_addr"
     return $ip_addr
 }
 
-#创建上传
+#鍒涘缓涓婁紶
 proc input_upload {client_id access_t refresh_token} {
     #package require md5
     puts -nonewline "Please input the video title:"
@@ -69,7 +69,7 @@ proc create_upload {client_id access_t refresh_token} {
         puts "create OK"
         puts [http::code $token]
         } elseif {[lsearch [http::code $token] "1009"] >=0} {
-            #token过期，需要刷新token
+            #token杩囨湡锛岄渶瑕佸埛鏂皌oken
             source [file join [file dirname [info script]] "auth.tcl"]
             re_token $client_id $refresh_token
         } else {
@@ -95,7 +95,7 @@ proc create_upload {client_id access_t refresh_token} {
         }
 
     
-    #获取DNS解析地址
+    #鑾峰彇DNS瑙ｆ瀽鍦板潃
     set ip_addr [get_ipaddr $upload_server_uri]
     set token [open u_info.txt w]
     puts $token "${u_file}:${upload_token}:${ip_addr}"
@@ -238,18 +238,18 @@ if {![file exists token.json]} {
     puts "======================================================"
     puts "You first use this script,you have to auth for upload."
     puts "======================================================"
-    #无token，即为首次使用，获取code和token
+    #鏃爐oken锛屽嵆涓洪娆′娇鐢紝鑾峰彇code鍜宼oken
     source [file join [file dirname [info script]] "auth.tcl"]
     set code [auth $client_id $redirect_uri]
     get_token $client_id $client_secret $redirect_uri $code
 } 
-    #存在文件，通过upload返回判断是否过期
+    #瀛樺湪鏂囦欢锛岄�氳繃upload杩斿洖鍒ゆ柇鏄惁杩囨湡
     set json [open token.json r]
     set date [split [read $json] "\n"]
     #puts "date is:$date"
     close $json
     set tmp [split $date "\":,\{\}"]
-    #去掉空列
+    #鍘绘帀绌哄垪
     while {[lsearch $tmp {}] >= 0} {
         set tmp [lreplace $tmp [lsearch $tmp {}] [lsearch $tmp {}]]
     }
