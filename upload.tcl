@@ -174,6 +174,7 @@ proc upload_slice {ip_addr upload_token slice_task_id offset length u_file} {
     #puts "[http::code $token]"
     set tmp [split [http::data $token] "\":,\{\}"]
     http::cleanup $token
+    unset data
     while {[lsearch $tmp {}] >= 0} {
         set tmp [lreplace $tmp [lsearch $tmp {}] [lsearch $tmp {}]]
     }
